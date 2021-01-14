@@ -5,7 +5,7 @@ import io.restassured.response.Response;
 
 import java.util.ArrayList;
 
-public class FilmsDTO implements StarWarsDTO{
+public class FilmsDTO extends StarWarsDTO{
 
 
     private ArrayList<String> characters;
@@ -25,13 +25,15 @@ public class FilmsDTO implements StarWarsDTO{
 
 
 
-
     public FilmsDTO(String url){
         Injector injector = new Injector();
         response = injector.getJSON(url);
         setupVariables();
 
 
+    }
+    public Response getResponse() {
+        return response;
     }
 
     public ArrayList<String> getCharacters() {
@@ -90,7 +92,7 @@ public class FilmsDTO implements StarWarsDTO{
         characters = response.jsonPath().get("characters");
         created = response.jsonPath().get("created");
         edited = response.jsonPath().get("edited");
-        episode_id = Integer.valueOf(response.jsonPath().get("episode_id"));
+        episode_id = response.jsonPath().get("episode_id");
         opening_crawl = response.jsonPath().get("opening_crawl");
         planets = response.jsonPath().get("planets");
         producer = response.jsonPath().get("producer");

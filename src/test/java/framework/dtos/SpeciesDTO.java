@@ -5,9 +5,9 @@ import io.restassured.response.Response;
 
 import java.util.ArrayList;
 
-public class SpeciesDTO implements StarWarsDTO{
-    private double average_height;
-    private int average_lifespan;
+public class SpeciesDTO extends StarWarsDTO{
+    private String average_height;
+    private String average_lifespan;
     private String classification;
     private String created;
     private String designation;
@@ -32,8 +32,8 @@ public class SpeciesDTO implements StarWarsDTO{
 
     public void setupVariables(){
 
-        average_height = Double.valueOf(response.jsonPath().get("average_height"));
-        average_lifespan = Integer.valueOf(response.jsonPath().get("average_lifespan"));
+        average_height = response.jsonPath().get("average_height");
+        average_lifespan = response.jsonPath().get("average_lifespan");
         classification = response.jsonPath().get("classification");
         created = response.jsonPath().get("created");
         designation = response.jsonPath().get("designation");
@@ -46,18 +46,22 @@ public class SpeciesDTO implements StarWarsDTO{
         films = response.jsonPath().get("films");
         skin_colors = response.jsonPath().get("skin_colors");
         url = response.jsonPath().get("url");
-
     }
 
 
 
 
 
-    public double getAverage_height() {
+    public String getAverage_height() {
+
         return average_height;
     }
 
-    public int getAverage_lifespan() {
+    public Response getResponse() {
+        return response;
+    }
+
+    public String getAverage_lifespan() {
         return average_lifespan;
     }
 

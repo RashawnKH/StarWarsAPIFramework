@@ -5,25 +5,28 @@ import io.restassured.response.Response;
 
 import java.util.ArrayList;
 
-public class StarshipsDTO implements StarWarsDTO{
+public class StarshipsDTO extends StarWarsDTO{
+    public Response getResponse() {
+        return response;
+    }
 
     private String MGLT;
-    private int cargo_capacity;
+    private String cargo_capacity;
     private String consumables;
-    private int cost_in_credits;
+    private String cost_in_credits;
     private String created;
-    private int crew;
+    private String crew;
     private String edited;
-    private double hyperdrive_rating;
-    private int length;
+    private String hyperdrive_rating;
+    private String length;
     private String manufacturer;
     private String max_atmosphering_speed;
     private String model;
     private String name;
-    private int passengers;
+    private String passengers;
     private ArrayList<String> films;
     private ArrayList<String> pilots;
-    private int starship_class;
+    private String starship_class;
     private String url;
     private Response response;
 
@@ -39,7 +42,7 @@ public class StarshipsDTO implements StarWarsDTO{
         return MGLT;
     }
 
-    public int getCargo_capacity() {
+    public String getCargo_capacity() {
         return cargo_capacity;
     }
 
@@ -47,7 +50,7 @@ public class StarshipsDTO implements StarWarsDTO{
         return consumables;
     }
 
-    public int getCost_in_credits() {
+    public String getCost_in_credits() {
         return cost_in_credits;
     }
 
@@ -55,19 +58,19 @@ public class StarshipsDTO implements StarWarsDTO{
         return created;
     }
 
-    public int getCrew() {
-        return crew;
+    public String getCrew() {
+       return  crew;
     }
 
     public String getEdited() {
         return edited;
     }
 
-    public double getHyperdrive_rating() {
+    public String getHyperdrive_rating() {
         return hyperdrive_rating;
     }
 
-    public int getLength() {
+    public String getLength() {
         return length;
     }
 
@@ -87,7 +90,7 @@ public class StarshipsDTO implements StarWarsDTO{
         return name;
     }
 
-    public int getPassengers() {
+    public String getPassengers() {
         return passengers;
     }
 
@@ -99,7 +102,7 @@ public class StarshipsDTO implements StarWarsDTO{
         return pilots;
     }
 
-    public int getStarship_class() {
+    public String getStarship_class() {
         return starship_class;
     }
 
@@ -110,19 +113,19 @@ public class StarshipsDTO implements StarWarsDTO{
     private void setupVariables(){
 
         MGLT = response.jsonPath().getString("MGLT");
-        cargo_capacity = Integer.valueOf(response.jsonPath().get("cargo_capacity"));
+        cargo_capacity = response.jsonPath().get("cargo_capacity");
         consumables = response.jsonPath().getString("consumables");
-        cost_in_credits = Integer.valueOf(response.jsonPath().get("cost_in_credits"));
+        cost_in_credits = response.jsonPath().get("cost_in_credits");
         created = response.jsonPath().getString("created");
-        crew = Integer.valueOf(response.jsonPath().get("crew"));
+        crew = response.jsonPath().get("crew");
         edited = response.jsonPath().get("edited");
-        hyperdrive_rating = Double.valueOf(response.jsonPath().get("hyperdrive_rating"));
-        length = Integer.valueOf(response.jsonPath().get("length"));
+        hyperdrive_rating = response.jsonPath().get("hyperdrive_rating");
+        length = response.jsonPath().get("length");
         manufacturer = response.jsonPath().getString("manufacturer");
         max_atmosphering_speed = response.jsonPath().get("max_atmosphering_speed");
         model = response.jsonPath().get("model");
         pilots = response.jsonPath().get("pilots");
-        passengers = Integer.valueOf(response.jsonPath().get("passengers"));
+        passengers = response.jsonPath().get("passengers");
 
         starship_class = response.jsonPath().get("starship_class");
         name = response.jsonPath().getString("name");

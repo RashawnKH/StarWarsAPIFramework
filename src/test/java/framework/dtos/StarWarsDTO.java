@@ -1,4 +1,9 @@
 package framework.dtos;
 
-public interface StarWarsDTO {
+
+
+public abstract class StarWarsDTO {
+
+    public StarWarsDTO(){}
+
 }

@@ -6,7 +6,7 @@ import io.restassured.response.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class PersonDTO implements StarWarsDTO{
+public class PersonDTO extends StarWarsDTO{
 
     private String name;
     private int height;
@@ -25,10 +25,16 @@ public class PersonDTO implements StarWarsDTO{
     private String url;
     private Response response;
 
+
+
     public PersonDTO(String url){
         Injector injector = new Injector();
         response = injector.getJSON(url);
         setupVariables();
+    }
+
+    public Response getResponse() {
+        return response;
     }
 
     private void setupVariables(){
@@ -111,24 +117,5 @@ public class PersonDTO implements StarWarsDTO{
         return url;
     }
 
-    @Override
-    public String toString() {
-        return "PersonDTO{" +
-                "name='" + name + '\'' +
-                ", height=" + height +
-                ", mass=" + mass +
-                ", hair_colour='" + hair_colour + '\'' +
-                ", eye_colour='" + eye_colour + '\'' +
-                ", birth_year='" + birth_year + '\'' +
-                ", gender='" + gender + '\'' +
-                ", homeWorld='" + homeWorld + '\'' +
-                ", films=" + films.toString() +
-                ", species=" + species.toString() +
-                ", vehicles=" + vehicles.toString() +
-                ", starShips=" + starShips.toString() +
-                ", created='" + created + '\'' +
-                ", edited='" + edited + '\'' +
-                ", url='" + url + '\'' +
-                '}';
-    }
+
 }

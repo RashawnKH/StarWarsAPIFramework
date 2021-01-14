@@ -47,4 +47,11 @@ public class ConnectionManagerTests {
         }
     }
 
+
+    @Test
+    @DisplayName("Getting HTTP version")
+    void canGetVersion(){
+
+    }
+
 }
