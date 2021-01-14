@@ -10,7 +10,7 @@ public class Injector {
     public static Response getJSON(String url){
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connect(url);
-        Response json =  connectionManager.getResponse().then().contentType(ContentType.JSON).extract().response();
+        Response json =  connectionManager.getResponse(); //.then().contentType(ContentType.JSON).extract().response();
 
         return json;
     }
@@ -19,9 +19,8 @@ public class Injector {
         if (url.equals(null) || url.equals("")){
             return null;
         }
-
         if (url.contains("people")) {
-            return new PersonDTO(url);
+            return new PeopleDTO(url);
         } else if (url.contains("films")) {
             return new FilmsDTO(url);
         } else if (url.contains("vehicles")) {

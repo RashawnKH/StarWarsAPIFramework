@@ -6,6 +6,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -28,15 +29,18 @@ public class ConnectionManager {
     }
 
 
-    public String convertServerDateToLocalDate(){
+    public LocalDate convertServerDateToLocalDate(){
         String date = response.getHeader("date");
         String from_format = "E, dd MMM yyyy HH:mm:ss z";
 
         DateTimeFormatter from_formatter = DateTimeFormatter.ofPattern(from_format);
-        LocalDateTime dateFromServer = LocalDateTime.parse(date, from_formatter);
+        LocalDate dateFromServer = LocalDate.parse(date, from_formatter);
 
-        return String.valueOf(dateFromServer);
+        return dateFromServer;
     }
+
+
+
 
 
     public HashMap<String, String> getHeaders()  {

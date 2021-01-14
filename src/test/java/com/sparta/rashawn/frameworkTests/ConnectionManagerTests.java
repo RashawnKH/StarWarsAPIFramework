@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 
@@ -26,8 +27,9 @@ public class ConnectionManagerTests {
     @Test
     @DisplayName("Testing the date is converted correctly")
     void checkConvertedDate(){
-        String date = connectionManager.convertServerDateToLocalDate();
-        Assertions.assertEquals(LocalDateTime.parse(date).getMonth(), LocalDateTime.now().getMonth());
+
+        Assertions.assertEquals(connectionManager.convertServerDateToLocalDate(), LocalDate.now());
+
     }
 
     @Test
@@ -48,10 +50,5 @@ public class ConnectionManagerTests {
     }
 
 
-    @Test
-    @DisplayName("Getting HTTP version")
-    void canGetVersion(){
-
-    }
 
 }

@@ -6,15 +6,15 @@ import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 
-public class PersonDTOTest {
+public class PeopleDTOTest {
 
-  private static PersonDTO person;
+  private static PeopleDTO person;
 
 
     @BeforeAll
     @DisplayName("Setting up object")
     static void setup(){
-        person = (PersonDTO) Injector.generateDTO("https://swapi.dev/api/people/1/");
+        person = (PeopleDTO) Injector.generateDTO("https://swapi.dev/api/people/1/");
     }
 
 
@@ -88,5 +88,10 @@ public class PersonDTOTest {
             Assertions.assertEquals(starshipsDTO.getName(), starshipsDTO.getResponse().jsonPath().get("name"));
         }
     }
+
+
+
+
+
 
 }
