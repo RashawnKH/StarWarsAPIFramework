@@ -4,13 +4,12 @@ import framework.injector.Injector;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class PersonDTO extends StarWarsDTO{
 
     private String name;
-    private int height;
-    private int mass;
+    private String height;
+    private String mass;
     private String hair_colour;
     private String eye_colour;
     private String birth_year;
@@ -25,8 +24,6 @@ public class PersonDTO extends StarWarsDTO{
     private String url;
     private Response response;
 
-
-
     public PersonDTO(String url){
         Injector injector = new Injector();
         response = injector.getJSON(url);
@@ -39,31 +36,91 @@ public class PersonDTO extends StarWarsDTO{
 
     private void setupVariables(){
         name = response.jsonPath().getString("name");
-        height = Integer.valueOf(response.jsonPath().get("height"));
-        mass = Integer.valueOf(response.jsonPath().get("mass"));
-        hair_colour = response.jsonPath().getString("hair_color");
-        eye_colour = response.jsonPath().getString("eye_color");
-        birth_year = response.jsonPath().getString("birth_year");
-        gender = response.jsonPath().getString("gender");
-        homeWorld = response.jsonPath().getString("homeworld");
+        height = response.jsonPath().get("height");
+        mass = response.jsonPath().get("mass");
+        hair_colour = response.jsonPath().get("hair_color");
+        eye_colour = response.jsonPath().get("eye_color");
+        birth_year = response.jsonPath().get("birth_year");
+        gender = response.jsonPath().get("gender");
+        homeWorld = response.jsonPath().get("homeworld");
         films = response.jsonPath().get("films");
         species = response.jsonPath().get("species");
         vehicles = response.jsonPath().get("vehicles");
         starShips = response.jsonPath().get("starships");
-        created = response.jsonPath().getString("created");
-        edited = response.jsonPath().getString("edited");
-        url = response.jsonPath().getString("url");
+        created = response.jsonPath().get("created");
+        edited = response.jsonPath().get("edited");
+        url = response.jsonPath().get("url");
     }
+
+
+    public ArrayList<FilmsDTO> getFilmObjectsList(){
+        ArrayList<FilmsDTO> films = new ArrayList<>();
+
+        if (getFilms().size()!=0) {
+            for (String string : getFilms()) {
+                FilmsDTO filmsDTO = (FilmsDTO) Injector.generateDTO(string);
+                films.add(filmsDTO);
+            }
+        }
+
+        return films;
+    }
+
+
+    public ArrayList<VehiclesDTO> getVehiclesObjectsList(){
+        ArrayList<VehiclesDTO> vehicles = new ArrayList<>();
+
+        if (getVehicles().size()!=0) {
+            for (String string : getVehicles()) {
+                VehiclesDTO vehiclesDTO = (VehiclesDTO) Injector.generateDTO(string);
+                vehicles.add(vehiclesDTO);
+            }
+        }
+        return vehicles;
+    }
+
+
+    public ArrayList<SpeciesDTO> getSpeciesObjectsList(){
+        ArrayList<SpeciesDTO> species = new ArrayList<>();
+
+        if (getSpecies().size()!=0) {
+            for (String string : getSpecies()) {
+                SpeciesDTO speciesDTO= (SpeciesDTO) Injector.generateDTO(string);
+                species.add(speciesDTO);
+            }
+        }
+        return species;
+
+    }
+
+
+    public ArrayList<StarshipsDTO> getStarshipsObjectsList(){
+        ArrayList<StarshipsDTO> starships = new ArrayList<>();
+
+        if (getStarShips().size()!=0) {
+            for (String string : getStarShips()) {
+                StarshipsDTO starshipsDTO= (StarshipsDTO) Injector.generateDTO(string);
+                starships.add(starshipsDTO);
+            }
+        }
+        return starships;
+    }
+
+
+
+
+
+
 
     public String getName() {
         return name;
     }
 
-    public int getHeight() {
+    public String getHeight() {
         return height;
     }
 
-    public int getMass() {
+    public String getMass() {
         return mass;
     }
 
@@ -96,8 +153,6 @@ public class PersonDTO extends StarWarsDTO{
     }
 
     public ArrayList<String> getVehicles() {
-
-
         return vehicles;
     }
 
