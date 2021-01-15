@@ -2,7 +2,6 @@ package framework.injector;
 
 import framework.connectionmanager.ConnectionManager;
 import framework.dtos.*;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 public class Injector {
@@ -10,7 +9,7 @@ public class Injector {
     public static Response getJSON(String url){
         ConnectionManager connectionManager = new ConnectionManager();
         connectionManager.connect(url);
-        Response json =  connectionManager.getResponse(); //.then().contentType(ContentType.JSON).extract().response();
+        Response json =  connectionManager.getResponse();
 
         return json;
     }

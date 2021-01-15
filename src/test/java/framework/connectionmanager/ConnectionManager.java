@@ -1,5 +1,6 @@
 package framework.connectionmanager;
 
+import framework.dtos.StarWarsDTO;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -29,7 +30,7 @@ public class ConnectionManager {
     }
 
 
-    public LocalDate convertServerDateToLocalDate(){
+    public LocalDate convertServerDateToLocalDate(Response response){
         String date = response.getHeader("date");
         String from_format = "E, dd MMM yyyy HH:mm:ss z";
 
@@ -40,10 +41,7 @@ public class ConnectionManager {
     }
 
 
-
-
-
-    public HashMap<String, String> getHeaders()  {
+    public HashMap<String, String> getHeaders(Response response)  {
         HashMap<String, String> headers = new HashMap<>();
 
         headers.put("server",response.getHeader("server"));
@@ -57,18 +55,15 @@ public class ConnectionManager {
         headers.put("allow", response.getHeader("allow"));
         headers.put("strict-transport-security", response.getHeader("strict-transport-security"));
 
-
         return headers;
     }
 
-    public int getStatusCode(){
+    public int getStatusCode(Response response){
          return response.getStatusCode();
     }
 
     public ResponseBody getBody(){
         return response.getBody();
     }
-
-
 
 }

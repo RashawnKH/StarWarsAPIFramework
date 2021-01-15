@@ -14,7 +14,7 @@ public class PeopleDTOTest {
     @BeforeAll
     @DisplayName("Setting up object")
     static void setup(){
-        person = (PeopleDTO) Injector.generateDTO("https://swapi.dev/api/people/1/");
+        person = (PeopleDTO) Injector.generateDTO("https://swapi.dev/api/people/82/");
     }
 
 

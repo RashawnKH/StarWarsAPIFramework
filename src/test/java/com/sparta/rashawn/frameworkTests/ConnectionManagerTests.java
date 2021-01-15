@@ -9,7 +9,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class ConnectionManagerTests {
@@ -20,7 +19,7 @@ public class ConnectionManagerTests {
     void setup(){
         connectionManager = new ConnectionManager();
         connectionManager.connect("https://swapi.dev/api/people/1/");
-        Assertions.assertEquals(connectionManager.getStatusCode(), 200);
+        Assertions.assertEquals(connectionManager.getStatusCode(connectionManager.getResponse()), 200);
 
     }
 
@@ -28,7 +27,7 @@ public class ConnectionManagerTests {
     @DisplayName("Testing the date is converted correctly")
     void checkConvertedDate(){
 
-        Assertions.assertEquals(connectionManager.convertServerDateToLocalDate(), LocalDate.now());
+        Assertions.assertEquals(connectionManager.convertServerDateToLocalDate(connectionManager.getResponse()), LocalDate.now());
 
     }
 
@@ -43,7 +42,7 @@ public class ConnectionManagerTests {
     @Test
     @DisplayName("Testing you can get the correct headers")
     void canGetHeaders(){
-        HashMap<String,String> headers = connectionManager.getHeaders();
+        HashMap<String,String> headers = connectionManager.getHeaders(connectionManager.getResponse());
         for (String string: headers.keySet()) {
             Assertions.assertEquals(headers.get(string), connectionManager.getResponse().getHeader(string));
         }

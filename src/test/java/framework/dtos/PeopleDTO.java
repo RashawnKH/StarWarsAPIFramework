@@ -1,55 +1,55 @@
 package framework.dtos;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import framework.injector.Injector;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 
 import java.util.ArrayList;
 
+
 public class PeopleDTO extends StarWarsDTO{
 
-    @JsonProperty private String name;
-    @JsonProperty private String height;
-    @JsonProperty private String mass;
-    @JsonProperty private String hair_color;
-    @JsonProperty private String eye_color;
-    @JsonProperty private String birth_year;
-    @JsonProperty private String gender;
-    @JsonProperty private String homeworld;
-    @JsonProperty private String skin_color;
+    private String name;
+    private String height;
+    private String mass;
+    private String hair_color;
+    private String eye_color;
+    private String birth_year;
+    private String gender;
+    private String homeworld;
+    private String skin_color;
 
-
-
-    @JsonProperty private ArrayList<String> films;
-    @JsonProperty private ArrayList<String> species;
-    @JsonProperty private ArrayList<String> vehicles;
-    @JsonProperty private ArrayList<String> starships;
-    @JsonProperty private String created;
-    @JsonProperty private String edited;
-    @JsonProperty private String url;
+    private ArrayList<String> films;
+    private ArrayList<String> species;
+    private ArrayList<String> vehicles;
+    private ArrayList<String> starships;
+    private String created;
+    private String edited;
+    private String url;
     private Response response;
 
-
-    public PeopleDTO(){
-    }
 
 
 
     public PeopleDTO(String url){
         Injector injector = new Injector();
         response = injector.getJSON(url);
-
-
         try {
             setupVariables();
         }catch (ClassCastException e){
             e.printStackTrace();
        }
-
     }
 
+
+    //For testing purposes
     public Response getResponse() {
         return response;
+    }
+
+
+    public JsonPath getJSON(){
+        return response.jsonPath();
     }
 
     private void setupVariables(){
@@ -59,6 +59,7 @@ public class PeopleDTO extends StarWarsDTO{
             mass = response.jsonPath().get("mass");
             hair_color = response.jsonPath().get("hair_color");
             eye_color = response.jsonPath().get("eye_color");
+            skin_color = response.jsonPath().get("skin_color");
             birth_year = response.jsonPath().get("birth_year");
             gender = response.jsonPath().get("gender");
             homeworld = response.jsonPath().get("homeworld");
@@ -69,8 +70,6 @@ public class PeopleDTO extends StarWarsDTO{
             created = response.jsonPath().get("created");
             edited = response.jsonPath().get("edited");
             url = response.jsonPath().get("url");
-
-
     }
 
 
@@ -83,7 +82,6 @@ public class PeopleDTO extends StarWarsDTO{
                 films.add(filmsDTO);
             }
         }
-
         return films;
     }
 
@@ -216,20 +214,6 @@ public class PeopleDTO extends StarWarsDTO{
         return false;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public String getSkin_color() {
         return skin_color;
     }
@@ -260,7 +244,7 @@ public class PeopleDTO extends StarWarsDTO{
     }
 
     public PlanetsDTO getHomeWorldObject(){
-         PlanetsDTO planetDTO = (PlanetsDTO) Injector.generateDTO(homeworld);
+         PlanetsDTO planetDTO = (PlanetsDTO) Injector.generateDTO(getHomeWorld());
          return planetDTO;
     }
 

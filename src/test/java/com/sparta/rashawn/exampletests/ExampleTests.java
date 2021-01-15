@@ -1,8 +1,11 @@
-package com.sparta.rashawn;
+package com.sparta.rashawn.exampletests;
 
 import framework.connectionmanager.ConnectionManager;
 import framework.dtos.*;
 import framework.injector.Injector;
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -10,8 +13,12 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+
 
 public class ExampleTests {
 
@@ -19,31 +26,91 @@ public class ExampleTests {
     private static PeopleDTO person;
     private static  ConnectionManager connectionManager;
 
+    private static Response response;
+
     @BeforeAll
     @DisplayName("Setting up connection and personDTO")
-    static void setup(){
-        connectionManager = new ConnectionManager();
-        connectionManager.connect("https://swapi.dev/api/people/1/");
+    static void setup() {
+        response = RestAssured.get("https://swapi.dev/api/people/1/");
 
+
+        connectionManager = new ConnectionManager();
         person = (PeopleDTO) Injector.generateDTO("https://swapi.dev/api/people/1/");
     }
 
+    @Test
+    @DisplayName("Converting date without framework")
+    void checkDateWithoutFramework(){
+        String date = response.getHeader("date");
+        String from_format = "E, dd MMM yyyy HH:mm:ss z";
 
+        DateTimeFormatter from_formatter = DateTimeFormatter.ofPattern(from_format);
+        LocalDate dateFromServer = LocalDate.parse(date, from_formatter);
+
+        Assertions.assertEquals(dateFromServer, LocalDate.now());
+    }
 
     @Test
     @DisplayName("Testing the date is converted correctly")
     void checkConvertedDate(){
-        Assertions.assertEquals(connectionManager.convertServerDateToLocalDate(), LocalDate.now());
+        Assertions.assertEquals(connectionManager.convertServerDateToLocalDate(person.getResponse()), LocalDate.now());
     }
 
     @Test
-    @DisplayName("Testing you can get the correct headers")
-    void canGetHeaders(){
-        HashMap<String,String> headers = connectionManager.getHeaders();
-        for (String string: headers.keySet()) {
-            Assertions.assertEquals(headers.get(string), connectionManager.getResponse().getHeader(string));
-        }
+    @DisplayName("Testing can get headers from DTO")
+    void canGetDTOConnection(){
+        HashMap<String, String> headers = connectionManager.getHeaders(person.getResponse());
+        Assertions.assertEquals(headers.get("connection"), "keep-alive");
     }
+
+    @Test
+    @DisplayName("Testing status code with framework")
+    void checkStatusCode(){
+        Assertions.assertEquals(connectionManager.getStatusCode(person.getResponse()), 200);
+    }
+
+    @Test
+    @DisplayName("Testing all headers")
+    void canGetAllHeaders(){
+        HashMap<String, String> headers = connectionManager.getHeaders(person.getResponse());
+
+        for (String string : headers.keySet()){
+            Assertions.assertTrue(headers.get(string)!=null);
+        }
+
+    }
+
+    @Test
+    @DisplayName("Testing header without framework")
+    void testingHeaders() {
+        response.getHeader("connection").equals("[keep-alive]");
+    }
+
+
+
+    @Test
+    @DisplayName("Testing variables without framework")
+    void testingVariables(){
+        String name = response.jsonPath().getString("name");
+
+        String height = response.jsonPath().getString("height");
+
+        int heightNumber = Integer.valueOf(height);
+
+        String eye_colour = response.jsonPath().getString("eye_color");
+
+
+
+
+        assertThat("Luke Skywalker", Matchers.equalTo(name));
+
+        assertThat("172", Matchers.equalTo(height));
+
+        Assertions.assertTrue(heightNumber > 100);
+
+        assertThat("blue", Matchers.equalTo(eye_colour));
+    }
+
 
     @Test
     void checkIsFirstLetterUpperCase(){
@@ -109,28 +176,21 @@ public class ExampleTests {
 
     @Test
     void canGetSpeciesObjects(){
-        ArrayList<SpeciesDTO> species= person.getSpeciesObjectsList();
-        ArrayList<String> test = person.getResponse().jsonPath().get("species");
-
-        Assertions.assertEquals(species.size(), test.size());
+        Assertions.assertEquals(person.getSpeciesObjectsList().size(), 0);
     }
 
 
     @Test
     void canGetVehicles(){
         ArrayList<VehiclesDTO> vehicles = person.getVehiclesObjectsList();
+        Assertions.assertEquals(vehicles.get(1).getName(),"Imperial Speeder Bike" );
 
-        Assertions.assertEquals(vehicles.size(), 2);
-
-        for (VehiclesDTO vehiclesDTO : vehicles){
-            Assertions.assertEquals(vehiclesDTO.getName(), vehiclesDTO.getResponse().jsonPath().get("name"));
-        }
     }
 
     @Test
     void canGetStarShips(){
         ArrayList<StarshipsDTO> starships = person.getStarshipsObjectsList();
-        ArrayList<String> test = person.getResponse().jsonPath().get("starships");
+        ArrayList<String> test = person.getJSON().get("starships");
 
         Assertions.assertEquals(starships.size(), test.size());
 
@@ -143,19 +203,6 @@ public class ExampleTests {
         PlanetsDTO homeWorld = person.getHomeWorldObject();
         Assertions.assertEquals(homeWorld.getClimate(), "arid");
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
