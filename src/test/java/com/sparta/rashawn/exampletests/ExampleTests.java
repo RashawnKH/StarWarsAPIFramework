@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
 import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
@@ -73,10 +74,11 @@ public class ExampleTests {
     @DisplayName("Testing all headers")
     void canGetAllHeaders(){
         HashMap<String, String> headers = connectionManager.getHeaders(person.getResponse());
+        HashMap<String, String> filmHeaders = connectionManager.getHeaders(person.getFilmObjectsList().get(0).getResponse());
 
-        for (String string : headers.keySet()){
-            Assertions.assertTrue(headers.get(string)!=null);
-        }
+
+        Assertions.assertTrue(headers.get("vary")!=null);
+        Assertions.assertEquals(filmHeaders.get("connection"), "keep-alive");
 
     }
 
@@ -85,8 +87,6 @@ public class ExampleTests {
     void testingHeaders() {
         response.getHeader("connection").equals("[keep-alive]");
     }
-
-
 
     @Test
     @DisplayName("Testing variables without framework")
@@ -168,10 +168,7 @@ public class ExampleTests {
     void canGetFilmObjects(){
         ArrayList<FilmsDTO> films = person.getFilmObjectsList();
 
-        for (FilmsDTO filmsDTO : films){
-            Assertions.assertTrue(filmsDTO!=null);
-        }
-
+        Assertions.assertTrue(films.get(2)!=null);
     }
 
     @Test
